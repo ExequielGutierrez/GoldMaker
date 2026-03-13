@@ -1,0 +1,526 @@
+<Ui xmlns="http://www.runewaker.com/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.runewaker.com/..\..\WorldXML\UI.xsd">
+
+	<Frame name="GoldMaker_Item_Template" hidden="false" enableMouse="true" newSystem="true" dependencies="true" virtual="true">
+		<Size x="150" y="38"/>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentBackground" file="Interface\addons\GoldMaker\textures\item.tga">						
+				<Anchors>
+					<Anchor point="TOPLEFT"/>
+					<Anchor point="BOTTOMRIGHT"/>
+				</Anchors>
+					<Coords fileWidth="256" fileHeight="128" width="256" height="56" x="0" y="2" />
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<FontString name="$parentTitle" hidden="false" inherits="GameFontNormal" justifyH="LEFT" text="...">
+					<Size>
+						<AbsDimension x="105" y="12"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" x="39" y="0"/>
+					</Anchors>
+					<FontHeight>
+						<AbsValue val="12"/>
+					</FontHeight>
+					<Color hex="EEEEEE"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<CheckButton name="$parentIcon" scale="0.73">
+				<Size>
+					<AbsDimension x="32" y="32"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT" x="14" y="12"/>
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture name="$parentBorder" file="Interface\Buttons\QuickSlot-Normal">
+							<Size>
+								<AbsDimension x="64" y="64"/>
+							</Size>
+							<Anchors>
+								<Anchor point="CENTER"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+					<Layer level="BORDER">
+						<Texture name="$parentIcon">
+							<Size>
+								<AbsDimension x="32" y="32"/>
+							</Size>
+							<Anchors>
+								<Anchor point="CENTER"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnMouseWheel>
+						if delta > 0 then
+							this:GetParent():GetParent().Slider:DecrementValue();
+						else
+							this:GetParent():GetParent().Slider:IncrementValue();
+						end
+					</OnMouseWheel>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="$parentEnabled" hidden="true">
+				<Anchors>
+					<Anchor point="RIGHT" x="-8" y="0"/>
+				</Anchors>
+				<Size>
+					<AbsDimension x="20" y="20"/>
+				</Size>
+				<Scripts>
+				</Scripts>
+				<NormalTexture file="Interface\Buttons\CheckBox-Normal"/>
+				<PushedTexture file="Interface\Buttons\CheckBox-Depress"/>
+				<DisabledTexture file="Interface\Buttons\CheckBox-Disable"/>
+				<HighlightTexture file="Interface\Buttons\CheckBox-Highlight" alphaMode="ADD"/>
+				<CheckedTexture file="Interface\Buttons\CheckBox-Checked"/>
+				<DisabledCheckedTexture file="Interface\Buttons\CheckBox-Checked-Disabled"/>
+				<Scripts>
+					<OnMouseWheel>
+						if delta > 0 then
+							this:GetParent():GetParent().Slider:DecrementValue();
+						else
+							this:GetParent():GetParent().Slider:IncrementValue();
+						end
+					</OnMouseWheel>
+				</Scripts>
+			</CheckButton>
+			<Button name="$parentRemoveButton" enableMouse="true" hidden="true">
+				<Size x="16" y="16"/>
+				<Anchors>
+					<Anchor point="RIGHT" relativePoint="RIGHT" x="-10" y="0"/>
+				</Anchors>
+				<NormalTexture name="$parentNormalTexture" file="interface\HouseFrame\FuncButton\Remove-Normal.tga">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="0" y="0"/>
+					</Anchors>
+					<TexCoords left="0" right="1" top="0" bottom="1"/>
+				</NormalTexture>
+				<HighlightTexture name="$parentHighlightTexture" file="interface\HouseFrame\FuncButton\Remove-Hover.tga">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="0" y="0"/>
+					</Anchors>
+					<TexCoords left="0" right="1" top="0" bottom="1"/>
+				</HighlightTexture>
+				<PushedTexture name="$parentPushedTexture" file="interface\HouseFrame\FuncButton\Remove-Pushed.tga">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="0" y="0"/>
+					</Anchors>
+					<TexCoords left="0" right="1" top="0" bottom="1"/>
+				</PushedTexture>
+				<DisabledTexture name="$parentDisabledTexture" file="interface\HouseFrame\FuncButton\Remove-Disabled.tga">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="0" y="0"/>
+					</Anchors>
+					<TexCoords left="0" right="1" top="0" bottom="1"/>
+				</DisabledTexture>
+				<Scripts>
+					<OnClick>
+						GoldMaker_RemoveButtonOnClick( this );
+					</OnClick>
+					<OnEnter>
+						GameTooltip:SetOwner( this, "ANCHOR_TOP", 0, 0 );
+						GameTooltip:SetText("|cffFFD700Remove|r");
+						GameTooltip:Show();
+					</OnEnter>
+					<OnLeave>
+						GameTooltip:Hide();
+					</OnLeave>
+					<OnMouseWheel>
+						if delta > 0 then
+							this:GetParent():GetParent().Slider:DecrementValue();
+						else
+							this:GetParent():GetParent().Slider:IncrementValue();
+						end
+					</OnMouseWheel>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				this:RegisterForClicks("LeftButton", "MiddleButton", "RightButton");
+			</OnLoad>
+			<OnClick>
+				GoldMaker_Item_OnClic( this, key );
+			</OnClick>
+			<OnEnter>
+				GoldMaker_Item_OnEnter( this );
+			</OnEnter>
+			<OnLeave>
+				GoldMaker_Item_OnLeave( this );
+			</OnLeave>
+			<OnMouseWheel>
+				if delta > 0 then
+					this:GetParent().Slider:DecrementValue();
+				else
+					this:GetParent().Slider:IncrementValue();
+				end
+			</OnMouseWheel>
+		</Scripts>
+	</Frame>
+
+	<Button name="GoldMaker_Icon" hidden="false" parent="UIParent" movable="false" enableMouse="true" frameStrata="HIGH">
+		<Size>
+			<AbsDimension y="28" x="26"/>
+		</Size>
+		<Anchors>
+			<Anchor point="TOPRIGHT" relativePoint="BOTTOMLEFT" relativeTo="MinimapViewFrame" x="-29" y="-20"/>
+		</Anchors>
+		<Scripts>
+			<OnLoad>
+				this:RegisterForClicks("LeftButton", "MiddleButton", "RightButton");
+			</OnLoad>
+			<OnEnter>
+				GameTooltip:SetOwner(this,"ANCHOR_TOPRIGHT",0,0);
+				GameTooltip:SetText( "|cffFFD700Gold Maker|r" );
+				GameTooltip:AddLine(UI_GROUP_LOOT_FRAME_MOVE_TOOLTIP, 0, 0.75, 0.95)
+				GameTooltip:Show();
+			</OnEnter>
+			<OnClick>
+				if not IsShiftKeyDown() then
+					ToggleUIFrame(GoldMaker);
+				end
+			</OnClick>
+			<OnLeave>
+				GameTooltip:Hide();
+			</OnLeave>
+			<OnMouseDown>
+				GoldMaker_Icon_OnMouseDown( this, key );
+			</OnMouseDown>
+			<OnMouseUp>
+				GoldMaker_Icon_OnMouseUp( this );
+			</OnMouseUp>
+		</Scripts>
+		<NormalTexture file="Interface\addons\GoldMaker\icons\icon.tga"/>
+		<PushedTexture file="Interface\addons\GoldMaker\icons\iconP.tga"/>
+		<HighlightTexture file="Interface\addons\GoldMaker\icons\iconH.tga"/>
+	</Button>
+
+	<Button name="GoldMaker_Sell" hidden="true" parent="SpeakFrame" movable="false" enableMouse="true" frameStrata="HIGH" frameLevel="100">
+		<Size>
+			<AbsDimension y="28" x="26"/>
+		</Size>
+		<Anchors>
+			<Anchor point="TOPRIGHT" x="-31" y="31"/>
+		</Anchors>
+		<Scripts>
+			<OnLoad>
+				GoldMaker_OnLoad(this);
+			</OnLoad>
+			<OnEnter>
+				GameTooltip:SetOwner(this,"ANCHOR_TOPRIGHT",0,0);
+				GameTooltip:SetText( "|cffFFD700Gold Maker|r" );
+				GameTooltip:Show();
+			</OnEnter>
+			<OnEvent>
+				GoldMaker_OnOvent( this, event, arg1, arg2 );
+			</OnEvent>
+			<OnClick>
+				GoldMaker_SellButton_OnClick();
+			</OnClick>
+			<OnLeave>
+				GameTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+		<NormalTexture file="Interface\addons\GoldMaker\icons\icon.tga"/>
+		<PushedTexture file="Interface\addons\GoldMaker\icons\iconP.tga"/>
+		<HighlightTexture file="Interface\addons\GoldMaker\icons\iconH.tga"/>
+	</Button>
+	<Button name="GoldMaker_Sell2" hidden="false" parent="StoreFrame" movable="false" enableMouse="true" frameStrata="HIGH" frameLevel="100">
+		<Size>
+			<AbsDimension y="32" x="32"/>
+		</Size>
+		<Anchors>
+			<Anchor point="TOPRIGHT" x="-16" y="60"/>
+		</Anchors>
+		<Scripts>
+			<OnEnter>
+				GameTooltip:SetOwner(this,"ANCHOR_TOPRIGHT",0,0);
+				GameTooltip:SetText( "|cffFFD700Gold Maker|r" );
+				GameTooltip:Show();
+			</OnEnter>
+			<OnClick>
+				GoldMaker_SellButton2_OnClick();
+			</OnClick>
+			<OnLeave>
+				GameTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+		<NormalTexture file="Interface\addons\GoldMaker\icons\icon.dds"/>
+		<PushedTexture file="Interface\addons\GoldMaker\icons\iconP.dds"/>
+		<HighlightTexture file="Interface\addons\GoldMaker\icons\iconH.dds"/>
+	</Button>
+
+	<Frame name="GoldMaker" hidden="true" newSystem="true" dependencies="true" enableMouse="true" parent="UIParent">
+		<Size x="494" y="435"/>
+		<Anchors>
+			<Anchor point="CENTER" x="0" y="-100"/>
+		</Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentBackground" file="Interface\addons\GoldMaker\textures\background.tga">						
+				<Anchors>
+					<Anchor point="TOPLEFT"/>
+					<Anchor point="BOTTOMRIGHT"/>
+				</Anchors>
+					<Coords fileWidth="1024" fileHeight="1024" width="1024" height="890" x="0" y="0" />
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button name="$parentCloseButton" inherits="TRCloseFrameButton" scale="0.77">
+				<Size x="30" y="30"/>
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-38" y="22"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						this:GetParent():Hide();
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Frame name="$parentDefault" id="1" hidden="false" enableMouse="true" newSystem="true" dependencies="true">
+				<Size x="150" y="248"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" x="72" y="117"/>
+				</Anchors>
+				<Frames>
+					<Slider name="$parentSlider" hidden="false" stepMode="INT" incrementValue="1" enableMouse="true">
+						<Size x="7" y="245"/>
+						<Anchors>
+							<Anchor point="BOTTOMRIGHT" x="7" y="0"/>
+						</Anchors>
+						<Layers>
+							<Layer level="ARTWORK">
+								<Texture name="$parentFooterBackground1" file="interface\CardFrame\Backgrounds\HeaderMainCard.dds">
+									<Anchors>
+										<Anchor point="TOPLEFT" x="0" y="0"/>
+										<Anchor point="BOTTOMRIGHT" x="0" y="20"/>
+									</Anchors>
+									<TexCoords left="0.001953125" right="0.638671875" top="0.015625" bottom="0.65625"/>
+									<Color a="1"/>
+								</Texture>
+							</Layer>
+						</Layers>
+						<ThumbButton name="$parentThumbButton" newSystem="true">
+							<Size x="7" y="32"/>
+							<NormalTexture name="$parentNormalTexture" file="interface\TRUI\Scroll\NormalHandler.dds" hidden="false">
+								<Anchors>
+									<Anchor point="TOPLEFT"/>
+									<Anchor point="BOTTOMRIGHT"/>
+								</Anchors>
+								<TexCoords left="0.0625" right="0.5625" top="0.02" bottom="0.89"/>
+							</NormalTexture>
+							<NormalHighlightTexture name="$parentNormalHighlightTexture" file="interface\TRUI\Scroll\HighlightHandler.dds" hidden="false">
+								<Anchors>
+									<Anchor point="TOPLEFT"/>
+									<Anchor point="BOTTOMRIGHT"/>
+								</Anchors>
+								<TexCoords left="0.0625" right="0.5625" top="0.02" bottom="0.9"/>
+							</NormalHighlightTexture>
+							<PushedTexture name="$parentPushedTexture" file="interface\TRUI\Scroll\PushedHandler.dds" hidden="false">
+								<Anchors>
+									<Anchor point="TOPLEFT"/>
+									<Anchor point="BOTTOMRIGHT"/>
+								</Anchors>
+								<TexCoords left="0.0625" right="0.5625" top="0.02" bottom="0.9"/>
+							</PushedTexture>
+							<PushedHighlightTexture name="$parentPushedHighlightTexture" file="interface\TRUI\Scroll\PushedHandler.dds" hidden="false">
+								<Anchors>
+									<Anchor point="TOPLEFT"/>
+									<Anchor point="BOTTOMRIGHT"/>
+								</Anchors>
+								<TexCoords left="0.0625" right="0.5625" top="0.02" bottom="0.9"/>
+							</PushedHighlightTexture>
+						</ThumbButton>
+						<Scripts>
+							<OnLoad>
+								this:SetMinValue(0)
+								this:SetValue(0)
+							</OnLoad>
+							<OnValueChanged>
+								GoldMaker_Slider_DefaultItems_OnValueChange(this);
+							</OnValueChanged>
+							<OnMouseWheel>
+								if delta > 0 then
+									this:DecrementValue();
+								else
+									this:IncrementValue();
+								end
+							</OnMouseWheel>
+						</Scripts>
+					</Slider>
+					<Frame name="$parentItem1" inherits="GoldMaker_Item_Template" id="1">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="0" y="0"/>
+						</Anchors>
+					</Frame>
+					<Frame name="$parentItem2" inherits="GoldMaker_Item_Template" id="2">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentItem1" x="0" y="5"/>
+						</Anchors>
+					</Frame>
+					<Frame name="$parentItem3" inherits="GoldMaker_Item_Template" id="3">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentItem2" x="0" y="5"/>
+						</Anchors>
+					</Frame>
+					<Frame name="$parentItem4" inherits="GoldMaker_Item_Template" id="4">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentItem3" x="0" y="5"/>
+						</Anchors>
+					</Frame>
+					<Frame name="$parentItem5" inherits="GoldMaker_Item_Template" id="5">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentItem4" x="0" y="5"/>
+						</Anchors>
+					</Frame>
+					<Frame name="$parentItem6" inherits="GoldMaker_Item_Template" id="6">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentItem5" x="0" y="5"/>
+						</Anchors>
+					</Frame>
+				</Frames>
+				<Scripts>
+					<OnMouseWheel>
+						if delta > 0 then
+							this.Slider:DecrementValue();
+						else
+							this.Slider:IncrementValue();
+						end
+					</OnMouseWheel>
+				</Scripts>
+			</Frame>
+			<Frame name="$parentUser" id="2" hidden="false" enableMouse="true" newSystem="true" dependencies="true">
+				<Size x="150" y="267"/>
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-75" y="117"/>
+				</Anchors>
+				<Frames>
+					<Slider name="$parentSlider" hidden="false" stepMode="INT" incrementValue="1" enableMouse="true">
+						<Size x="7" y="245"/>
+						<Anchors>
+							<Anchor point="BOTTOMRIGHT" x="7" y="0"/>
+						</Anchors>
+						<Layers>
+							<Layer level="ARTWORK">
+								<Texture name="$parentFooterBackground1" file="interface\CardFrame\Backgrounds\HeaderMainCard.dds">
+									<Anchors>
+										<Anchor point="TOPLEFT" x="0" y="0"/>
+										<Anchor point="BOTTOMRIGHT" x="0" y="20"/>
+									</Anchors>
+									<TexCoords left="0.001953125" right="0.638671875" top="0.015625" bottom="0.65625"/>
+									<Color a="1"/>
+								</Texture>
+							</Layer>
+						</Layers>
+						<ThumbButton name="$parentThumbButton" newSystem="true">
+							<Size x="7" y="32"/>
+							<NormalTexture name="$parentNormalTexture" file="interface\TRUI\Scroll\NormalHandler.dds" hidden="false">
+								<Anchors>
+									<Anchor point="TOPLEFT"/>
+									<Anchor point="BOTTOMRIGHT"/>
+								</Anchors>
+								<TexCoords left="0.0625" right="0.5625" top="0.02" bottom="0.89"/>
+							</NormalTexture>
+							<NormalHighlightTexture name="$parentNormalHighlightTexture" file="interface\TRUI\Scroll\HighlightHandler.dds" hidden="false">
+								<Anchors>
+									<Anchor point="TOPLEFT"/>
+									<Anchor point="BOTTOMRIGHT"/>
+								</Anchors>
+								<TexCoords left="0.0625" right="0.5625" top="0.02" bottom="0.9"/>
+							</NormalHighlightTexture>
+							<PushedTexture name="$parentPushedTexture" file="interface\TRUI\Scroll\PushedHandler.dds" hidden="false">
+								<Anchors>
+									<Anchor point="TOPLEFT"/>
+									<Anchor point="BOTTOMRIGHT"/>
+								</Anchors>
+								<TexCoords left="0.0625" right="0.5625" top="0.02" bottom="0.9"/>
+							</PushedTexture>
+							<PushedHighlightTexture name="$parentPushedHighlightTexture" file="interface\TRUI\Scroll\PushedHandler.dds" hidden="false">
+								<Anchors>
+									<Anchor point="TOPLEFT"/>
+									<Anchor point="BOTTOMRIGHT"/>
+								</Anchors>
+								<TexCoords left="0.0625" right="0.5625" top="0.02" bottom="0.9"/>
+							</PushedHighlightTexture>
+						</ThumbButton>
+						<Scripts>
+							<OnLoad>
+								this:SetMinValue(0)
+								this:SetValue(0)
+							</OnLoad>
+							<OnValueChanged>
+								GoldMaker_Slider_UserItems_OnValueChange(this);
+							</OnValueChanged>
+							<OnMouseWheel>
+								if delta > 0 then
+									this:DecrementValue();
+								else
+									this:IncrementValue();
+								end
+							</OnMouseWheel>
+						</Scripts>
+					</Slider>
+					<Frame name="$parentItem1" inherits="GoldMaker_Item_Template" id="1">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="0" y="0"/>
+						</Anchors>
+					</Frame>
+					<Frame name="$parentItem2" inherits="GoldMaker_Item_Template" id="2">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentItem1" x="0" y="5"/>
+						</Anchors>
+					</Frame>
+					<Frame name="$parentItem3" inherits="GoldMaker_Item_Template" id="3">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentItem2" x="0" y="5"/>
+						</Anchors>
+					</Frame>
+					<Frame name="$parentItem4" inherits="GoldMaker_Item_Template" id="4">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentItem3" x="0" y="5"/>
+						</Anchors>
+					</Frame>
+					<Frame name="$parentItem5" inherits="GoldMaker_Item_Template" id="5">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentItem4" x="0" y="5"/>
+						</Anchors>
+					</Frame>
+					<Frame name="$parentItem6" inherits="GoldMaker_Item_Template" id="6">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentItem5" x="0" y="5"/>
+						</Anchors>
+					</Frame>
+				</Frames>
+				<Scripts>
+					<OnMouseWheel>
+						if delta > 0 then
+							this.Slider:DecrementValue();
+						else
+							this.Slider:IncrementValue();
+						end
+					</OnMouseWheel>
+				</Scripts>
+			</Frame>
+		</Frames>
+		<Scripts>
+			<OnShow>
+				GoldMaker_OnShow(this);
+			</OnShow>
+			<OnMouseDown>
+				GoldMaker_OnMouseDown(this);
+			</OnMouseDown>
+			<OnMouseUp>
+				GoldMaker_OnMouseUp(this);
+			</OnMouseUp>
+		</Scripts>
+	</Frame>
+</Ui>

@@ -1,0 +1,8 @@
+## Interface: 1
+## Version: 1
+## Title: Gold Maker
+## Author: Neoraxer
+
+Data.lua
+GoldMaker.lua
+GoldMaker.xml
