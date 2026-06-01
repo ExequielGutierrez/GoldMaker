@@ -27,6 +27,24 @@ GoldMaker_userItems = {
 
 --== Utility Functions ==--
 
+function GoldMaker_Icon_IsDocked()
+	if GoldMaker_Icon and GoldMaker_Icon.collectionButton then
+		return true;
+	end
+
+	local saveVariables = MinimapButtonCollectionSaveVariables;
+	local buttonCollection = saveVariables and saveVariables.buttonCollection;
+	if buttonCollection then
+		for _, buttonName in pairs( buttonCollection ) do
+			if buttonName == "GoldMaker_Icon" then
+				return true;
+			end
+		end
+	end
+
+	return false;
+end
+
 function GoldMaker_IsGold( id )
 	return GoldMaker_data[ id ] == true or GoldMaker_userItems[ id ];
 end
@@ -238,7 +256,7 @@ function GoldMaker_OpenStore( close )
 	end
 end
 
-function GoldMaker_OnEvent( event )
+function GoldMaker_OnOvent( event )
 	if event == "VARIABLES_LOADED" then
 		GoldMaker_userItems = GoldMaker_userItems or {};
 
@@ -272,11 +290,6 @@ function GoldMaker_OnEvent( event )
 end
 
 --== Entry Points for XML ==--
-
-function GoldMaker_OnOvent( frame, event, arg1, arg2 )
-	GoldMaker_OnEvent( event, arg1, arg2 );
-end
-
 function GoldMaker_SellButton_OnClick()
 	GoldMaker_OpenStore( false );
 	GoldMaker_isActive = true;
@@ -596,21 +609,54 @@ end
 
 --== Icon ==--
 
+local function GoldMaker_GetAnchorRelativeToName( relativeTo )
+	if relativeTo and relativeTo.GetName then
+		return relativeTo:GetName();
+	end
+	return relativeTo;
+end
+
 function GoldMaker_Icon_SetPos()
 	local x = GoldMaker_iconPosition.offsetX or iconDefaultPos.offsetX;
 	local y = GoldMaker_iconPosition.offsetY or iconDefaultPos.offsetY;
-	GoldMaker_Icon:SetAnchorOffset( x, y );
+	local relativeTo = GoldMaker_GetAnchorRelativeToName( GoldMaker_iconPosition.relativeTo ) or iconDefaultPos.relativeTo;
+	GoldMaker_iconPosition.relativeTo = relativeTo;
+	GoldMaker_Icon:ClearAllAnchors();
+	GoldMaker_Icon:SetAnchor(
+		GoldMaker_iconPosition.point or iconDefaultPos.point,
+		GoldMaker_iconPosition.relativePont or iconDefaultPos.relativePont,
+		relativeTo,
+		x,
+		y
+	);
+end
+
+function GoldMaker_Icon_OnEnter( this )
+	GameTooltip:SetOwner( this, "ANCHOR_TOPRIGHT", 0, 0 );
+	GameTooltip:SetText( "|cffFFD700Gold Maker|r" );
+	GameTooltip:AddLine( UI_GROUP_LOOT_FRAME_MOVE_TOOLTIP, 0, 0.75, 0.95 );
+	if not GoldMaker_Icon_IsDocked() then
+		GameTooltip:AddLine( "|cff0099ffCtrl + Right-click:|r Dock" );
+	end
+	GameTooltip:Show();
 end
 
 function GoldMaker_Icon_OnMouseDown( this, key )
+	MinimapButtonTemplate_OnMouseDown( this, key );
+
 	if IsShiftKeyDown() and key == "LBUTTON" then
 		this:StartMoving();
 	end
 end
 
-function GoldMaker_Icon_OnMouseUp( this )
+function GoldMaker_Icon_OnMouseUp( this, key )
+	MinimapButtonTemplate_OnMouseUp( this, key );
+
 	this:StopMovingOrSizing();
-	GoldMaker_iconPosition.point, GoldMaker_iconPosition.relativePont,
-	GoldMaker_iconPosition.relativeTo, GoldMaker_iconPosition.offsetX,
-	GoldMaker_iconPosition.offsetY = this:GetAnchor();
+	local point, relativePoint, relativeTo, offsetX, offsetY = this:GetAnchor();
+	GoldMaker_iconPosition.point = point;
+	GoldMaker_iconPosition.relativePont = relativePoint;
+	GoldMaker_iconPosition.relativeTo = GoldMaker_GetAnchorRelativeToName( relativeTo );
+	GoldMaker_iconPosition.offsetX = offsetX;
+	GoldMaker_iconPosition.offsetY = offsetY;
 end

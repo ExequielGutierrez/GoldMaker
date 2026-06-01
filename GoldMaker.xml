@@ -175,13 +175,11 @@
 		</Anchors>
 		<Scripts>
 			<OnLoad>
+				MinimapButtonTemplate_OnLoad( this );
 				this:RegisterForClicks("LeftButton", "MiddleButton", "RightButton");
 			</OnLoad>
 			<OnEnter>
-				GameTooltip:SetOwner(this,"ANCHOR_TOPRIGHT",0,0);
-				GameTooltip:SetText( "|cffFFD700Gold Maker|r" );
-				GameTooltip:AddLine(UI_GROUP_LOOT_FRAME_MOVE_TOOLTIP, 0, 0.75, 0.95)
-				GameTooltip:Show();
+				GoldMaker_Icon_OnEnter( this );
 			</OnEnter>
 			<OnClick>
 				if not IsShiftKeyDown() then
@@ -195,7 +193,7 @@
 				GoldMaker_Icon_OnMouseDown( this, key );
 			</OnMouseDown>
 			<OnMouseUp>
-				GoldMaker_Icon_OnMouseUp( this );
+				GoldMaker_Icon_OnMouseUp( this, key );
 			</OnMouseUp>
 		</Scripts>
 		<NormalTexture file="Interface\addons\GoldMaker\icons\icon.tga"/>
